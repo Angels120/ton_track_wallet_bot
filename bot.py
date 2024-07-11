@@ -3,7 +3,7 @@ import json
 import time
 import re
 import logging
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, KeyboardButton, ReplyKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, KeyboardButton, ReplyKeyboardMarkup, BotCommand
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext, MessageHandler, Filters, ConversationHandler
 from bs4 import BeautifulSoup
 from collections import Counter
@@ -11,7 +11,8 @@ import struct
 import base64
 
 # TELEGRAM_BOT_TOKEN = '7020905024:AAE3zL6JSQlEgi5jRJZLTpFTsozvAoMkHbo'
-TELEGRAM_BOT_TOKEN = '6533247407:AAH3-WWItZLB6OvYoYrFjnLFWMTOI7L6ZfY'
+# TELEGRAM_BOT_TOKEN = '6533247407:AAH3-WWItZLB6OvYoYrFjnLFWMTOI7L6ZfY'
+TELEGRAM_BOT_TOKEN = '7375760689:AAGQkMozY42mSz7ZUdI6BpePp0VyO8A8LMA'
 URL = 'https://toncenter.com/api/v2/convertAddress'
 YOUR_TELEGRAM_USER_ID = 5099082627
 
@@ -177,6 +178,7 @@ def kontrolswap(transaction, wallet_address, ton_price, user_id, wallet_name):
             return "yok"
         out_msgs = transaction.get('out_msgs', [])
         if out_msgs:
+            print("outmsg: ", out_msgs)
             value_ton = int(out_msgs[0].get('value', 0)) / 10**9
             # if getmsg.get("events", []) and getmsg["events"][0].get("actions", []) and getmsg["events"][0]["actions"][0].get("JettonTransfer", {}).get("jetton", {}).get("name", ""):
             #     token_name = getmsg["events"][0]["actions"][0]["JettonTransfer"]["jetton"]["name"]
@@ -220,7 +222,7 @@ def kontrolswap(transaction, wallet_address, ton_price, user_id, wallet_name):
                     emoji = "🐋"
 
                 new_description = f"{description} {emoji} "
-                message = f"💹 <u><b>New Swap Alert</b></u> 💹\n\n 🔍 Wallet Address: \n <code>{wallet_address}</code>-({wallet_name})\n\n\n🔄  Tonscan Transaction : {value_ton} TON (${value_usd:.2f})<br/> 📈 Token Name : {token_name}<br/> 📝 Contract Address: <code>{contract_address}</code><br/><br/> Powered By @resistanceCatTon -"
+                message = f"💹 <u><b>New Swap Alert</b></u> 💹\n\n 🔍 Wallet Address: \n <code>{wallet_address}</code>-({wallet_name})\n\n\n🔄  Tonscan Transaction : {value_ton} TON (${value_usd:.2f})<br> 📈 Token Name : {token_name}<br> 📝 Contract Address: <code>{contract_address}</code><br><br> Powered By @resistanceCatTon -"
                 return message
             else:
                 return "yok"
@@ -255,18 +257,29 @@ def add_wallet(wallet_address, user_id , wallet_name):
 def addSetting(user_id, limit):
     with open("settings.txt", "r") as f:
         lines = f.readlines()
-        lines = [line for line in lines if not re.search(user_id, line)]
-    with open("settings.txt", "a") as file:
-        file.write(f"{user_id},{limit}\n")
+        filtered_lines = []
+        for line in lines:
+            try:
+                if not re.search(str(user_id), str(line)):
+                    filtered_lines.append(line)
+            except Exception as e:
+                print(f"An error occurred while processing line: {line}. Error: {e}")
+        filtered_lines.append(f"{user_id},{limit}\n")
+    with open("settings.txt", "w") as file:
+        for wline in filtered_lines:
+            file.write(wline)
+        
 
 def getLimit(user_id):
     with open("settings.txt", "r") as f:
         lines = f.readlines()
         for line in lines:
             parts = line.strip().split(',')
-            if parts[0] == user_id:
+            if int(parts[0]) == user_id:
                 return parts[1]
     return "0"
+
+
 
 
 
@@ -297,34 +310,38 @@ def display_wallets(userid):
     return user_wallets
 
 
-def start(update, context):
+def start(update: Update, context: CallbackContext):
     userid = update.message.chat_id
     wallets = display_wallets(userid)
     wallet_length = len(wallets)
     context.user_data['buttons'] = []
     message = """
-Welcome to "TON Tracker" 
+<b><u>Welcome to "TON Whale Tracker"  - a product of @resistanceCatTon Ecosystem ! </u></b>
 
-The pioneer Wallet Tracker on TON Chain! Stay tuned as we evolve into a comprehensive bot featuring whale tracking, wallet monitoring, and price alerts seamlessly integrated into the TON chain. 🚀
+🐳 Add the wallets you want to track and get notified on all their token transactions. 
 
-Type /add to input the TON wallet address you wish to track. Let's get started!
+🤫 Track Alpha Wallets with our "<b>Most Tracked Wallets</b>" feature. 
+
+💪 Say goodbye to missing out on insider tokens! Track TON WHALE wallets and see what they're buying before anyone else. 
+
+📢 Book ad slots now and get your token’s ad featured in every single transaction notification for all users of our bot!
+
+📝 Type /start to get started. <b>Happy Tracking</b> future Whales 🐳
     """
+    keyboard = [
+        [InlineKeyboardButton("➕ Add", callback_data='add'), InlineKeyboardButton(f"👛 Wallets({wallet_length}/3)", callback_data='wallet')],
+        [InlineKeyboardButton("⚙️ Settings", callback_data='settings')],
+        [InlineKeyboardButton("🤖 Support", callback_data='support')],
+        [InlineKeyboardButton("🤖 Most Tracked Wallets", callback_data='top')],
+    ]
+
+
     if(userid == YOUR_TELEGRAM_USER_ID):
-        keyboard = [
-            [InlineKeyboardButton("➕ Add", callback_data='add'), InlineKeyboardButton(f"👛 Wallets({wallet_length}/3)", callback_data='wallet')],
-            [InlineKeyboardButton("⚙️ Settings", callback_data='settings')],
-            [InlineKeyboardButton("🤖 Support", callback_data='support')],
-            [InlineKeyboardButton("🔈 Send to All", callback_data='broadcast')]
-        ]
-    else :
-        keyboard = [
-            [InlineKeyboardButton("➕ Add", callback_data='add'), InlineKeyboardButton(f"👛 Wallets({wallet_length}/3)", callback_data='wallet')],
-            [InlineKeyboardButton("⚙️ Settings", callback_data='settings')],
-            [InlineKeyboardButton("🤖 Support", callback_data='support')],
-        ]
+        keyboard.append([InlineKeyboardButton("🔈 Send to All", callback_data='broadcast')])
     reply_markup = InlineKeyboardMarkup(keyboard)
     # context.bot.send_message(chat_id=update.message.chat_id, text=message)
-    update.message.reply_text(message, reply_markup=reply_markup)
+    update.message.reply_photo(photo="https://www.dropbox.com/scl/fi/cm8o459ydk8y43dstivar/Reca_photo.jpg?rlkey=n40jvmanrrurfthm0g409ysqv&st=1xyksnzq&dl=0", caption=message, reply_markup=reply_markup, parse_mode='HTML')
+    # update.message.reply_text(message, reply_markup=reply_markup)
     # custom_keyboard = [
     #     [KeyboardButton("/add"), KeyboardButton("/help")],
     #     [KeyboardButton("/info")]
@@ -345,12 +362,23 @@ def button(update : Update, context : CallbackContext) -> int:
         list_wallets(query, context)
     elif query.data == 'support':
         query.edit_message_text(text="Help command executed!")
-    elif query.data == 'settings':
-        query.message.reply_text('Please enter the dollar amount for which you want to receive transaction notifications from your tracked wallet')
+    elif query.data == 'current_setting':
+        current_setting = getLimit(query.message.chat_id)
+        query.message.reply_text(text=f"current limit is {current_setting}$.")
+    elif query.data == 'change_setting':
+        query.message.reply_text('Please specify the dollar amount for which you want to receive transaction notifications from your tracked wallet. For example, if you set the limit to $1000, you will only be notified of transactions exceeding $1000.')
         return SETTINGS
+    elif query.data == 'settings':
+        settings_button = [
+            [InlineKeyboardButton("Current Settins", callback_data="current_setting"),InlineKeyboardButton("Change", callback_data="change_setting")]
+            ]
+        reply_markup = InlineKeyboardMarkup(settings_button)
+        query.message.reply_text("Limit Setting", reply_markup=reply_markup)
     elif query.data == 'broadcast':
         query.message.reply_text('Do you want to add buttons with message? If yes, please input button name and link. eg:"add, https://example.com". Else please input empty.')
         return ADD_BUTTONS
+    elif query.data == 'top':
+        getTop5(query, context)
 
 def handle_address(update, context):
     userid = update.message.chat_id
@@ -394,7 +422,7 @@ def settings(update, context):
     user_id = update.message.chat_id
     if limit.isdigit():  # Check if the message contains only digits
         addSetting(user_id, limit)
-        message = f'Set limit to ${limit} for {user_id}.'
+        message = f'Limit set to {limit}$ . From now on, only transactions above {limit}$ will be notified. Happy tracking!'
         # context.bot.send_message(chat_id=update.message.chat_id, text=message)
         update.message.reply_text(message)
         return ConversationHandler.END
@@ -413,13 +441,16 @@ def remove(update, context):
     message = f'Removed {wallet_address} from the list of watched wallets.'
     context.bot.send_message(chat_id=update.message.chat_id, text=message)
 
-def getTop5(update, context):
+def getTop5(update: Update, context: CallbackContext):
     top_addresses = get_top_wallet_addresses()
-    message = ""
+    message = "🐳 <b><u>MOST TRACKED WALLETS</u></b> 🐳 \n\n"
+    i = 0
     for address, count in top_addresses:
-        message += f"Address: {address} - Used {count} times.\n"
+        i += 1
+        text = "Users" if(count > 1) else "User"
+        message += f"<b>{i}. Address:</b> <code>{address}</code>\n <b>Tracked By</b> {count} {text}\n\n"
         print(f"Address: {address} - Used {count} times.")
-    update.message.reply_text(message)
+    update.message.reply_text(text=message, parse_mode='HTML')
 
 def list_wallets(update, context):
     userid = update.message.chat_id
@@ -527,9 +558,20 @@ def monitor_transactions():
             time.sleep(2)
         time.sleep(2)
 
+def set_bot_commands(updater):
+    commands = [
+        BotCommand("start", "Start interacting with the bot"),
+        BotCommand("list", "Get wallet list"),
+        BotCommand("whale_tracker", "whale_tracker"),
+        BotCommand("reca", "reca"),
+        BotCommand("top", "Most tracked wallets"),
+        # Add more commands as needed
+    ]
+    updater.bot.set_my_commands(commands)
+
 updater = Updater(token=TELEGRAM_BOT_TOKEN, use_context=True)
 dispatcher = updater.dispatcher
-
+set_bot_commands(updater)
 start_handler = CommandHandler('start', start)
 add_handler = CommandHandler('add', add)
 remove_handler = CommandHandler('remove', remove)
