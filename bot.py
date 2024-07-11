@@ -84,7 +84,7 @@ def send_announcement(update: Update, context: CallbackContext):
     buttons = []
     for button in customButtons:
         # json_button = json.loads(button)
-        buttons.append([InlineKeyboardButton(f"{button["button_name"].strip()}", url = f"{button["button_link"].strip()}")])
+        buttons.append([InlineKeyboardButton(button["button_name"].strip(), url = button["button_link"].strip())])
     # buttons = [
     #     [InlineKeyboardButton("Learn More", url='https://example.com/learn-more')],
     #     [InlineKeyboardButton("Visit Website", url='https://example.com')],
