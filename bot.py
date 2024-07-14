@@ -309,6 +309,13 @@ def display_wallets(userid):
                 user_wallets.append(f"{wallet_info[0]} Name : ({wallet_info[2]})")
     return user_wallets
 
+def is_address_valid(address: str) -> bool:
+    try:
+        address_regex = r'^[\S]{48}$'
+        return re.match(address_regex, address) is not None
+    except Exception as e:
+        return False
+
 
 def start(update: Update, context: CallbackContext):
     userid = update.message.chat_id
@@ -332,7 +339,8 @@ def start(update: Update, context: CallbackContext):
         [InlineKeyboardButton("➕ Add", callback_data='add'), InlineKeyboardButton(f"👛 Wallets({wallet_length}/3)", callback_data='wallet')],
         [InlineKeyboardButton("⚙️ Settings", callback_data='settings')],
         [InlineKeyboardButton("🤖 Support", callback_data='support')],
-        [InlineKeyboardButton("🤖 Most Tracked Wallets", callback_data='top')],
+        [InlineKeyboardButton("📈 Most Tracked Wallets", callback_data='top')],
+        [InlineKeyboardButton("🛎 Book Ad Slots", url='https://t.me/RECA_Support')],
     ]
 
 
@@ -355,7 +363,9 @@ def button(update : Update, context : CallbackContext) -> int:
     query.answer()
     if query.data == 'add':
         # add(update, context)
-        query.message.reply_text('Please provide a wallet address to add.')
+        keyboard = [[InlineKeyboardButton("Back", callback_data="backToStart")]]
+        query.message.reply_text('Please provide a wallet address to add.', reply_markup=InlineKeyboardMarkup(keyboard))
+        
         return ADD_WALLET_ADDRESS
     elif query.data == 'wallet':
         # query.message.reply_text("Wallet list")
@@ -380,18 +390,29 @@ def button(update : Update, context : CallbackContext) -> int:
     elif query.data == 'top':
         getTop5(query, context)
 
+def handle_callback_start(update: Update, context: CallbackContext) -> None:
+    query = update.callback_query
+    query.answer()
+    # Call the start function directly
+    start(query, context)
+    return ConversationHandler.END
+
 def handle_address(update, context):
     userid = update.message.chat_id
     wallets = display_wallets(userid)
     wallet_length = len(wallets)
     if(wallet_length < 3):
 
+        if(is_address_valid(update.message.text) != True):
+            update.message.reply_text("Please enter valid address")
+            return ADD_WALLET_ADDRESS
         context.user_data['wallet_address'] = update.message.text
         
         update.message.reply_text("please enter the wallet name")
         return WALLET_NAME
     else : 
         update.message.reply_text("The max number of wallets is 3")
+        return ConversationHandler.END
 
 def handle_walletName(update, context):
     wallet_name = update.message.text
@@ -583,7 +604,10 @@ get_top_wallet_handler = CommandHandler('top', getTop5)
 conv_handler = ConversationHandler(
         entry_points=[CallbackQueryHandler(button)],
         states={
-            ADD_WALLET_ADDRESS: [MessageHandler(Filters.text & ~Filters.command, handle_address)],
+            ADD_WALLET_ADDRESS: [
+                MessageHandler(Filters.text & ~Filters.command, handle_address),
+                CallbackQueryHandler(handle_callback_start, pattern='^backToStart$'),
+                ],
             WALLET_LIST : [MessageHandler(Filters.text & ~Filters.command, list_wallets)],
             WALLET_NAME : [MessageHandler(Filters.text & ~Filters.command, handle_walletName)],
             SETTINGS : [MessageHandler(Filters.text & ~Filters.command, settings)],
