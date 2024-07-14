@@ -364,8 +364,7 @@ def button(update : Update, context : CallbackContext) -> int:
     query.answer()
     if query.data == 'add':
         # add(update, context)
-        keyboard = [[InlineKeyboardButton("Back", callback_data="backToStart")]]
-        query.message.reply_text('Please provide a wallet address to add.', reply_markup=InlineKeyboardMarkup(keyboard))
+        query.message.reply_text('Please provide a wallet address to add.')
         
         return ADD_WALLET_ADDRESS
     elif query.data == 'wallet':
@@ -607,7 +606,6 @@ conv_handler = ConversationHandler(
         states={
             ADD_WALLET_ADDRESS: [
                 MessageHandler(Filters.text & ~Filters.command, handle_address),
-                CallbackQueryHandler(handle_callback_start, pattern='^backToStart$'),
                 ],
             WALLET_LIST : [MessageHandler(Filters.text & ~Filters.command, list_wallets)],
             WALLET_NAME : [MessageHandler(Filters.text & ~Filters.command, handle_walletName)],
