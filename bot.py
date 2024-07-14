@@ -27,7 +27,7 @@ def get_last_transaction(wallet_address):
     response = requests.get(url)
     # data = json.loads(response.text)
     data = response.json()
-    return data.get('result', [])[0] if data.get('ok') else None
+    return data.get('result', [])[0] if data.get('ok') and len(data["result"]) != 0 else None
 
 def get_ton_price():
     url = "https://tonapi.io/v2/rates?tokens=ton&currencies=usd"
@@ -385,7 +385,8 @@ def button(update : Update, context : CallbackContext) -> int:
         reply_markup = InlineKeyboardMarkup(settings_button)
         query.message.reply_text("Limit Setting", reply_markup=reply_markup)
     elif query.data == 'broadcast':
-        query.message.reply_text('Do you want to add buttons with message? If yes, please input button name and link. eg:"add, https://example.com". Else please input empty.')
+        keyboard = [[InlineKeyboardButton("Back", callback_data="backToStart")]]
+        query.message.reply_text('Do you want to add buttons with message? If yes, please input button name and link. eg:"add, https://example.com". Else please input empty.',reply_markup=InlineKeyboardMarkup(keyboard))
         return ADD_BUTTONS
     elif query.data == 'top':
         getTop5(query, context)
@@ -611,7 +612,10 @@ conv_handler = ConversationHandler(
             WALLET_LIST : [MessageHandler(Filters.text & ~Filters.command, list_wallets)],
             WALLET_NAME : [MessageHandler(Filters.text & ~Filters.command, handle_walletName)],
             SETTINGS : [MessageHandler(Filters.text & ~Filters.command, settings)],
-            ADD_BUTTONS: [MessageHandler(Filters.text & ~Filters.command, add_buttons)],
+            ADD_BUTTONS: [
+                MessageHandler(Filters.text & ~Filters.command, add_buttons),
+                CallbackQueryHandler(handle_callback_start, pattern='^backToStart$')
+                ],
             ADD_QUE: [MessageHandler(Filters.text & ~Filters.command, add_que)],
             BROADCAST : [MessageHandler(Filters.all, send_announcement)]
         },
