@@ -14,6 +14,7 @@ import base64
 TELEGRAM_BOT_TOKEN = '6533247407:AAEvW7gW_3LhINMiacNEVq5E41bLx4p113A'
 # TELEGRAM_BOT_TOKEN = '7375760689:AAGQkMozY42mSz7ZUdI6BpePp0VyO8A8LMA'
 URL = 'https://toncenter.com/api/v2/convertAddress'
+# YOUR_TELEGRAM_USER_ID = 7314466396
 YOUR_TELEGRAM_USER_ID = 5099082627
 
 # Replace with your actual API key
@@ -385,8 +386,7 @@ def button(update : Update, context : CallbackContext) -> int:
         reply_markup = InlineKeyboardMarkup(settings_button)
         query.message.reply_text("Limit Setting", reply_markup=reply_markup)
     elif query.data == 'broadcast':
-        keyboard = [[InlineKeyboardButton("Back", callback_data="backToStart")]]
-        query.message.reply_text('Do you want to add buttons with message? If yes, please input button name and link. eg:"add, https://example.com". Else please input empty.',reply_markup=InlineKeyboardMarkup(keyboard))
+        query.message.reply_text('Do you want to add buttons with message? If yes, please input button name and link. eg:"add, https://example.com". Else please input empty.')
         return ADD_BUTTONS
     elif query.data == 'top':
         getTop5(query, context)
@@ -612,14 +612,12 @@ conv_handler = ConversationHandler(
             WALLET_LIST : [MessageHandler(Filters.text & ~Filters.command, list_wallets)],
             WALLET_NAME : [MessageHandler(Filters.text & ~Filters.command, handle_walletName)],
             SETTINGS : [MessageHandler(Filters.text & ~Filters.command, settings)],
-            ADD_BUTTONS: [
-                MessageHandler(Filters.text & ~Filters.command, add_buttons),
-                CallbackQueryHandler(handle_callback_start, pattern='^backToStart$')
-                ],
+            ADD_BUTTONS: [MessageHandler(Filters.text & ~Filters.command, add_buttons)],
             ADD_QUE: [MessageHandler(Filters.text & ~Filters.command, add_que)],
             BROADCAST : [MessageHandler(Filters.all, send_announcement)]
         },
-        fallbacks=[],
+        fallbacks=[start_handler, get_top_wallet_handler, add_handler,remove_handler,list_handler,whale_tracker_handler,reca_handler],
+        allow_reentry=True,
     )
 
 dispatcher.add_handler(start_handler)
