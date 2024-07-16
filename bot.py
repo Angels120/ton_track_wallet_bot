@@ -13,7 +13,6 @@ import base64
 # TELEGRAM_BOT_TOKEN = '7020905024:AAE3zL6JSQlEgi5jRJZLTpFTsozvAoMkHbo'
 TELEGRAM_BOT_TOKEN = '6533247407:AAEvW7gW_3LhINMiacNEVq5E41bLx4p113A'
 # TELEGRAM_BOT_TOKEN = '7375760689:AAGQkMozY42mSz7ZUdI6BpePp0VyO8A8LMA'
-URL = 'https://toncenter.com/api/v2/convertAddress'
 # YOUR_TELEGRAM_USER_ID = 7314466396
 YOUR_TELEGRAM_USER_ID = 5099082627
 
@@ -24,7 +23,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 def get_last_transaction(wallet_address):
-    url = f"https://toncenter.com/api/v2/getTransactions?address={wallet_address}&limit=1&to_lt=0&archival=false"
+    url = f"https://toncenter.com/api/v2/getTransactions?address={wallet_address}&limit=1&to_lt=0&archival=false&api_key={api_key}"
     response = requests.get(url)
     # data = json.loads(response.text)
     data = response.json()
@@ -127,7 +126,7 @@ def getContractAddress(raw_address):
     endpoint = 'https://toncenter.com/api/v3/addressBook'
 
     # Construct the request URL
-    url = f'{endpoint}?address={raw_address}'
+    url = f'{endpoint}?address={raw_address}&api_key={api_key}'
 
     response = requests.get(url)
     
