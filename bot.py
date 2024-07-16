@@ -31,11 +31,17 @@ def get_last_transaction(wallet_address):
     return data.get('result', [])[0] if data.get('ok') and len(data["result"]) != 0 else None
 
 def get_ton_price():
-    url = "https://tonapi.io/v2/rates?tokens=ton&currencies=usd"
-    response = requests.get(url)
-    # data = json.loads(response.text)
-    data = response.json()
-    return data.get('rates', {}).get('TON', {}).get('prices', {}).get('USD', 0)
+    try:
+        url = "https://tonapi.io/v2/rates?tokens=ton&currencies=usd"
+        response = requests.get(url)
+        # data = json.loads(response.text)
+        if response.status_code == 200:
+            data = response.json()
+            return data.get('rates', {}).get('TON', {}).get('prices', {}).get('USD', 0)
+        else :
+            return 0
+    except Exception as e:
+        return 0
 
 def add_buttons(update : Update, context: CallbackContext):
     if(update.message.text == 'empty'):
@@ -371,7 +377,7 @@ def button(update : Update, context : CallbackContext) -> int:
         # query.message.reply_text("Wallet list")
         list_wallets(query, context)
     elif query.data == 'support':
-        query.edit_message_text(text="Help command executed!")
+        query.message.reply_text(text="Help command executed!")
     elif query.data == 'current_setting':
         current_setting = getLimit(query.message.chat_id)
         query.message.reply_text(text=f"current limit is {current_setting}$.")
