@@ -1,0 +1,652 @@
+[
+    {
+        "label": "pattern",
+        "importPath": "ast",
+        "description": "ast",
+        "isExtraImport": true,
+        "detail": "ast",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "logging",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "InlineKeyboardButton",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "InlineKeyboardMarkup",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "Update",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "KeyboardButton",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "ReplyKeyboardMarkup",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "BotCommand",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "Updater",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "CommandHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "CallbackQueryHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "CallbackContext",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "MessageHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "Filters",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "ConversationHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "BeautifulSoup",
+        "importPath": "bs4",
+        "description": "bs4",
+        "isExtraImport": true,
+        "detail": "bs4",
+        "documentation": {}
+    },
+    {
+        "label": "Counter",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "struct",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "struct",
+        "description": "struct",
+        "detail": "struct",
+        "documentation": {}
+    },
+    {
+        "label": "base64",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "base64",
+        "description": "base64",
+        "detail": "base64",
+        "documentation": {}
+    },
+    {
+        "label": "get_last_transaction",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def get_last_transaction(wallet_address):\n    url = f\"https://toncenter.com/api/v2/getTransactions?address={wallet_address}&limit=1&to_lt=0&archival=false&api_key={api_key}\"\n    response = requests.get(url)\n    # data = json.loads(response.text)\n    data = response.json()\n    return data.get('result', [])[0] if data.get('ok') and len(data[\"result\"]) != 0 else None\ndef get_ton_price():\n    try:\n        url = \"https://tonapi.io/v2/rates?tokens=ton&currencies=usd\"\n        response = requests.get(url)",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "get_ton_price",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def get_ton_price():\n    try:\n        url = \"https://tonapi.io/v2/rates?tokens=ton&currencies=usd\"\n        response = requests.get(url)\n        # data = json.loads(response.text)\n        if response.status_code == 200:\n            data = response.json()\n            return data.get('rates', {}).get('TON', {}).get('prices', {}).get('USD', 0)\n        else :\n            return 0",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "add_buttons",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def add_buttons(update : Update, context: CallbackContext):\n    if(update.message.text == 'empty'):\n        update.message.reply_text(\"Please input message with photo\")\n        return BROADCAST\n    text = update.message.text.split(',')\n    button_name = text[0]\n    button_link = text[1]\n    context.user_data['buttons'].append({'button_name' : button_name, 'button_link': button_link})\n    print(\"buttons\", context.user_data['buttons'])\n    update.message.reply_text(\"Do you want to another button? If yes, type add, else empty\")",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "add_que",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def add_que(update: Update, context: CallbackContext):\n    text = update.message.text\n    if(text == \"add\"):\n        return ADD_BUTTONS\n    elif(text == \"empty\"):\n        update.message.reply_text(\"Please input message with photo\")\n        return BROADCAST\ndef getAllUsers():\n    users = []\n    with open(\"watched_wallets.txt\", \"r\") as f:",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "getAllUsers",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def getAllUsers():\n    users = []\n    with open(\"watched_wallets.txt\", \"r\") as f:\n        for line in f:\n            wallet_info = line.strip().split(',')\n            users.append(f\"{wallet_info[1]}\")\n    print(\"users: \", list(set(users)))\n    return list(set(users))\ndef send_announcement(update: Update, context: CallbackContext):\n    print(\"sending message\")",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "send_announcement",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def send_announcement(update: Update, context: CallbackContext):\n    print(\"sending message\")\n    photo_file = update.message.photo[-1].get_file()\n    if photo_file:\n        photo_url = photo_file.file_id\n    print(photo_url)\n    owner_id = update.message.from_user.id  # Owner's user ID (for demonstration purposes)\n    allowed_owner_id = YOUR_TELEGRAM_USER_ID  # Replace with your actual Telegram user ID\n    if owner_id != allowed_owner_id:\n        update.message.reply_text('You are not authorized to send announcements.')",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "get_top_wallet_addresses",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def get_top_wallet_addresses(top_n=5):\n    with open(\"watched_wallets.txt\", 'r') as file:\n        lines = file.readlines()\n    wallet_addresses = []\n    for line in lines:\n        parts = line.strip().split(',')\n        wallet_addresses.append(parts[0])\n    address_counts = Counter(wallet_addresses)\n    return address_counts.most_common(top_n)\ndef getContractAddress(raw_address):",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "getContractAddress",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def getContractAddress(raw_address):\n    endpoint = 'https://toncenter.com/api/v3/addressBook'\n    # Construct the request URL\n    url = f'{endpoint}?address={raw_address}&api_key={api_key}'\n    response = requests.get(url)\n    if response.status_code == 200:\n        data = response.json()\n        if f'{raw_address}' in data:\n            return data[f'{raw_address}']['user_friendly']\n        else:",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "format_transaction_message",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def format_transaction_message(transaction, ton_price , user_id, wallet_name, wallet_address):\n    try:\n        address = transaction.get('address', {}).get('account_address', 'Unknown')\n        transaction_id = transaction.get('transaction_id', {}).get('hash', 'Unknown')\n        # getmsg = requests.get(f\"https://tonapi.io/v2/accounts/{wallet_address}/events?limit=2\").json()\n        out_msgs = transaction.get('out_msgs', [])\n        print(\"out_msgs: \", out_msgs)\n        raw_address = \"\"\n        contract_address = \"\"\n        if out_msgs:",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "kontrolswap",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def kontrolswap(transaction, wallet_address, ton_price, user_id, wallet_name):\n    try:\n        if not transaction:\n            return \"yok\"\n        raw_address = \"\"\n        contract_address = \"\"\n        getmsg = requests.get(f\"https://tonapi.io/v2/accounts/{wallet_address}/events/{transaction['transaction_id']['hash']}\").json()\n        print(\"getmsg: \", getmsg)\n        if getmsg.get(\"actions\", []) and getmsg[\"actions\"][0].get(\"simple_preview\", {}).get(\"description\", \"\"):\n            if getmsg[\"actions\"][0][\"simple_preview\"][\"name\"] == \"Swap Tokens\":",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "send_telegram_notification",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def send_telegram_notification(message, user_id):\n    try:\n        keyboard = {\n            'inline_keyboard': [\n                [{'text': 'Promote your token', 'url': 'https://t.me/RECA_Support'}]\n            ]\n        }\n        url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage'\n        payload = {'chat_id': user_id, 'text': message, 'parse_mode': 'HTML', 'reply_markup': json.dumps(keyboard)}\n        response = requests.post(url, json=payload)",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "add_wallet",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def add_wallet(wallet_address, user_id , wallet_name):\n    with open(\"watched_wallets.txt\", \"a\") as f:\n        f.write(f\"{wallet_address},{user_id},{wallet_name}\\n\")\ndef addSetting(user_id, limit):\n    with open(\"settings.txt\", \"r\") as f:\n        lines = f.readlines()\n        filtered_lines = []\n        for line in lines:\n            try:\n                if not re.search(str(user_id), str(line)):",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "addSetting",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def addSetting(user_id, limit):\n    with open(\"settings.txt\", \"r\") as f:\n        lines = f.readlines()\n        filtered_lines = []\n        for line in lines:\n            try:\n                if not re.search(str(user_id), str(line)):\n                    filtered_lines.append(line)\n            except Exception as e:\n                print(f\"An error occurred while processing line: {line}. Error: {e}\")",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "getLimit",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def getLimit(user_id):\n    with open(\"settings.txt\", \"r\") as f:\n        lines = f.readlines()\n        for line in lines:\n            parts = line.strip().split(',')\n            if int(parts[0]) == user_id:\n                return parts[1]\n    return \"0\"\ndef get_user_for_wallet(wallet_address):\n    with open(\"watched_wallets.txt\", \"r\") as f:",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "get_user_for_wallet",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def get_user_for_wallet(wallet_address):\n    with open(\"watched_wallets.txt\", \"r\") as f:\n        lines = f.readlines()\n        for line in lines:\n            parts = line.strip().split(',')\n            if parts[0] == wallet_address:\n                return parts[1] \n    return None\ndef remove_wallet(wallet_address):\n    with open(\"watched_wallets.txt\", \"r\") as f:",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "remove_wallet",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def remove_wallet(wallet_address):\n    with open(\"watched_wallets.txt\", \"r\") as f:\n        lines = f.readlines()\n    with open(\"watched_wallets.txt\", \"w\") as f:\n        for line in lines:\n            if line.strip().split(',')[0] != wallet_address:\n                f.write(line)\ndef display_wallets(userid):\n    user_wallets = []\n    with open(\"watched_wallets.txt\", \"r\") as f:",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "display_wallets",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def display_wallets(userid):\n    user_wallets = []\n    with open(\"watched_wallets.txt\", \"r\") as f:\n        for line in f:\n            wallet_info = line.strip().split(',')\n            if wallet_info[1] == str(userid): \n                user_wallets.append(f\"{wallet_info[0]} Name : ({wallet_info[2]})\")\n    return user_wallets\ndef is_address_valid(address: str) -> bool:\n    try:",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "is_address_valid",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def is_address_valid(address: str) -> bool:\n    try:\n        address_regex = r'^[\\S]{48}$'\n        return re.match(address_regex, address) is not None\n    except Exception as e:\n        return False\ndef start(update: Update, context: CallbackContext):\n    userid = update.message.chat_id\n    wallets = display_wallets(userid)\n    wallet_length = len(wallets)",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "start",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def start(update: Update, context: CallbackContext):\n    userid = update.message.chat_id\n    wallets = display_wallets(userid)\n    wallet_length = len(wallets)\n    context.user_data['buttons'] = []\n    message = \"\"\"\n<b><u>Welcome to \"TON Whale Tracker\"  - a product of @resistanceCatTon Ecosystem ! </u></b>\n🐳 Add the wallets you want to track and get notified on all their token transactions. \n🤫 Track Alpha Wallets with our \"<b>Most Tracked Wallets</b>\" feature. \n💪 Say goodbye to missing out on insider tokens! Track TON WHALE wallets and see what they're buying before anyone else. ",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "button",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def button(update : Update, context : CallbackContext) -> int:\n    query = update.callback_query\n    query.answer()\n    if query.data == 'add':\n        # add(update, context)\n        query.message.reply_text('Please provide a wallet address to add.')\n        return ADD_WALLET_ADDRESS\n    elif query.data == 'wallet':\n        # query.message.reply_text(\"Wallet list\")\n        list_wallets(query, context)",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "handle_callback_start",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def handle_callback_start(update: Update, context: CallbackContext) -> None:\n    query = update.callback_query\n    query.answer()\n    # Call the start function directly\n    start(query, context)\n    return ConversationHandler.END\ndef handle_address(update, context):\n    userid = update.message.chat_id\n    wallets = display_wallets(userid)\n    wallet_length = len(wallets)",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "handle_address",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def handle_address(update, context):\n    userid = update.message.chat_id\n    wallets = display_wallets(userid)\n    wallet_length = len(wallets)\n    if(wallet_length < 3):\n        if(is_address_valid(update.message.text) != True):\n            update.message.reply_text(\"Please enter valid address\")\n            return ADD_WALLET_ADDRESS\n        context.user_data['wallet_address'] = update.message.text\n        update.message.reply_text(\"please enter the wallet name\")",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "handle_walletName",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def handle_walletName(update, context):\n    wallet_name = update.message.text\n    wallet_address = context.user_data.get('wallet_address')\n    user_id = update.message.chat_id\n    add_wallet(wallet_address, user_id, wallet_name)\n    message = f'Added {wallet_address} to the list of watched wallets with name {wallet_name}.'\n    # context.bot.send_message(chat_id=update.message.chat_id, text=message)\n    update.message.reply_text(message)\n    return ConversationHandler.END\ndef add(update : Update, context : CallbackContext):",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "add",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def add(update : Update, context : CallbackContext):\n    if len(context.args) < 1:\n        context.bot.send_message(chat_id=update.message.chat_id, text=\"Please provide a wallet address to add.\")\n        return\n    wallet_address = context.args[0]\n    wallet_name = context.args[1] if len(context.args) > 1 else \"belirtilmedi\"\n    user_id = update.message.chat_id  \n    add_wallet(wallet_address, user_id, wallet_name)\n    message = f'Added {wallet_address} to the list of watched wallets with name {wallet_name}.'\n    context.bot.send_message(chat_id=update.message.chat_id, text=message)",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def settings(update, context):\n    limit = update.message.text\n    user_id = update.message.chat_id\n    if limit.isdigit():  # Check if the message contains only digits\n        addSetting(user_id, limit)\n        message = f'Limit set to {limit}$ . From now on, only transactions above {limit}$ will be notified. Happy tracking!'\n        # context.bot.send_message(chat_id=update.message.chat_id, text=message)\n        update.message.reply_text(message)\n        return ConversationHandler.END\n    else:",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "remove",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def remove(update, context):\n    if len(context.args) < 1:\n        context.bot.send_message(chat_id=update.message.chat_id, text=\"Please provide a wallet address to remove.\\nUsage: /remove 0:123456789abcdef\")\n        return\n    wallet_address = context.args[0]\n    remove_wallet(wallet_address)\n    message = f'Removed {wallet_address} from the list of watched wallets.'\n    context.bot.send_message(chat_id=update.message.chat_id, text=message)\ndef getTop5(update: Update, context: CallbackContext):\n    top_addresses = get_top_wallet_addresses()",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "getTop5",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def getTop5(update: Update, context: CallbackContext):\n    top_addresses = get_top_wallet_addresses()\n    message = \"🐳 <b><u>MOST TRACKED WALLETS</u></b> 🐳 \\n\\n\"\n    i = 0\n    for address, count in top_addresses:\n        i += 1\n        text = \"Users\" if(count > 1) else \"User\"\n        message += f\"<b>{i}. Address:</b> <code>{address}</code>\\n <b>Tracked By</b> {count} {text}\\n\\n\"\n        print(f\"Address: {address} - Used {count} times.\")\n    update.message.reply_text(text=message, parse_mode='HTML')",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "list_wallets",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def list_wallets(update, context):\n    userid = update.message.chat_id\n    print(userid)\n    wallets = display_wallets(userid)  \n    if wallets:\n        message = \"The following wallets are currently being monitored\\n\"\n        message += \"\\n\".join(wallets)\n        context.bot.send_message(chat_id=update.message.chat_id, text=message)\n    else:\n        message = \"There are no wallets currently being monitored.\"",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "whale_tracker",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def whale_tracker(update, context):\n    message = \"🐳 Whale Tracker feature is coming soon! 🐋\"\n    context.bot.send_message(chat_id=update.message.chat_id, text=message)\ndef reca(update, context):\n    message = \"\"\"\n😻 Telegram - @resistanceCatTon\n😽 Twitter - https://x.com/ResistanceCat\n🐳 Coingecko - https://www.coingecko.com/en/coins/the-resistance-cat\n💪 [Buy](https://t.me/stonks_sniper_bot?start=321781bbbefd7c99a7fa1e0c7cfd0704)\n\"\"\"",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "reca",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def reca(update, context):\n    message = \"\"\"\n😻 Telegram - @resistanceCatTon\n😽 Twitter - https://x.com/ResistanceCat\n🐳 Coingecko - https://www.coingecko.com/en/coins/the-resistance-cat\n💪 [Buy](https://t.me/stonks_sniper_bot?start=321781bbbefd7c99a7fa1e0c7cfd0704)\n\"\"\"\n    context.bot.send_message(chat_id=update.message.chat_id, text=message, parse_mode='Markdown')\ndef load_last_transaction_ids():\n    try:",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "load_last_transaction_ids",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def load_last_transaction_ids():\n    try:\n        with open('last_transaction_ids.json', 'r') as file:\n            return json.load(file)\n    except FileNotFoundError:\n        return {}\ndef save_last_transaction_ids(last_transaction_ids):\n    with open('last_transaction_ids.json', 'w') as file:\n        json.dump(last_transaction_ids, file)\ndef load_last_swap_ids():",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "save_last_transaction_ids",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def save_last_transaction_ids(last_transaction_ids):\n    with open('last_transaction_ids.json', 'w') as file:\n        json.dump(last_transaction_ids, file)\ndef load_last_swap_ids():\n    try:\n        with open('last_swap_ids.json', 'r') as file:\n            return json.load(file)\n    except FileNotFoundError:\n        return {}\ndef save_last_swap_ids(last_swap_ids):",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "load_last_swap_ids",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def load_last_swap_ids():\n    try:\n        with open('last_swap_ids.json', 'r') as file:\n            return json.load(file)\n    except FileNotFoundError:\n        return {}\ndef save_last_swap_ids(last_swap_ids):\n    print(\"saving swap id\")\n    with open('last_swap_ids.json', 'w') as file:\n        json.dump(last_swap_ids, file)",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "save_last_swap_ids",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def save_last_swap_ids(last_swap_ids):\n    print(\"saving swap id\")\n    with open('last_swap_ids.json', 'w') as file:\n        json.dump(last_swap_ids, file)\ndef getwallets():\n    wallets = []\n    try:\n        with open(\"watched_wallets.txt\", \"r\") as f:\n            for line in f:\n                wallet_info = line.strip().split(',')",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "getwallets",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def getwallets():\n    wallets = []\n    try:\n        with open(\"watched_wallets.txt\", \"r\") as f:\n            for line in f:\n                wallet_info = line.strip().split(',')\n                wallets.append((wallet_info[0], wallet_info[1], wallet_info[2]))\n    except Exception as e:\n        print(f\"An error occurred while reading watched wallets: {e}\")\n    return wallets",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "monitor_transactions",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def monitor_transactions():\n    while True:\n        last_transaction_ids = load_last_transaction_ids()\n        last_swap_ids = load_last_swap_ids()\n        wallets = getwallets()\n        for wallet_info in wallets:\n            wallet_address, user_id, wallet_name = wallet_info\n            print(wallet_address, user_id, wallet_name)\n            last_transaction_id = last_transaction_ids.get(wallet_address, \"\")\n            last_swap_id = last_swap_ids.get(wallet_address, \"\")",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "set_bot_commands",
+        "kind": 2,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "def set_bot_commands(updater):\n    commands = [\n        BotCommand(\"start\", \"Start interacting with the bot\"),\n        BotCommand(\"list\", \"Get wallet list\"),\n        BotCommand(\"whale_tracker\", \"whale_tracker\"),\n        BotCommand(\"reca\", \"reca\"),\n        BotCommand(\"top\", \"Most tracked wallets\"),\n        # Add more commands as needed\n    ]\n    updater.bot.set_my_commands(commands)",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "TELEGRAM_BOT_TOKEN",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "TELEGRAM_BOT_TOKEN = '6533247407:AAEvW7gW_3LhINMiacNEVq5E41bLx4p113A'\n# TELEGRAM_BOT_TOKEN = '7375760689:AAGQkMozY42mSz7ZUdI6BpePp0VyO8A8LMA'\n# YOUR_TELEGRAM_USER_ID = 7314466396\nYOUR_TELEGRAM_USER_ID = 5099082627\n# Replace with your actual API key\napi_key = '8cca03a2e544d87b519bf869291e497c4d81bf78cb0f0a7f04d4936eef5f8470'\nADD_WALLET_ADDRESS, WALLET_LIST, SETTINGS, WALLET_NAME, BROADCAST, ADD_BUTTONS, ADD_QUE = range(7)\nlogging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)\nlogger = logging.getLogger(__name__)\ndef get_last_transaction(wallet_address):",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "YOUR_TELEGRAM_USER_ID",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "YOUR_TELEGRAM_USER_ID = 5099082627\n# Replace with your actual API key\napi_key = '8cca03a2e544d87b519bf869291e497c4d81bf78cb0f0a7f04d4936eef5f8470'\nADD_WALLET_ADDRESS, WALLET_LIST, SETTINGS, WALLET_NAME, BROADCAST, ADD_BUTTONS, ADD_QUE = range(7)\nlogging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)\nlogger = logging.getLogger(__name__)\ndef get_last_transaction(wallet_address):\n    url = f\"https://toncenter.com/api/v2/getTransactions?address={wallet_address}&limit=1&to_lt=0&archival=false&api_key={api_key}\"\n    response = requests.get(url)\n    # data = json.loads(response.text)",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "api_key",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "api_key = '8cca03a2e544d87b519bf869291e497c4d81bf78cb0f0a7f04d4936eef5f8470'\nADD_WALLET_ADDRESS, WALLET_LIST, SETTINGS, WALLET_NAME, BROADCAST, ADD_BUTTONS, ADD_QUE = range(7)\nlogging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)\nlogger = logging.getLogger(__name__)\ndef get_last_transaction(wallet_address):\n    url = f\"https://toncenter.com/api/v2/getTransactions?address={wallet_address}&limit=1&to_lt=0&archival=false&api_key={api_key}\"\n    response = requests.get(url)\n    # data = json.loads(response.text)\n    data = response.json()\n    return data.get('result', [])[0] if data.get('ok') and len(data[\"result\"]) != 0 else None",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "logger = logging.getLogger(__name__)\ndef get_last_transaction(wallet_address):\n    url = f\"https://toncenter.com/api/v2/getTransactions?address={wallet_address}&limit=1&to_lt=0&archival=false&api_key={api_key}\"\n    response = requests.get(url)\n    # data = json.loads(response.text)\n    data = response.json()\n    return data.get('result', [])[0] if data.get('ok') and len(data[\"result\"]) != 0 else None\ndef get_ton_price():\n    try:\n        url = \"https://tonapi.io/v2/rates?tokens=ton&currencies=usd\"",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "updater",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "updater = Updater(token=TELEGRAM_BOT_TOKEN, use_context=True)\ndispatcher = updater.dispatcher\nset_bot_commands(updater)\nstart_handler = CommandHandler('start', start)\nadd_handler = CommandHandler('add', add)\nremove_handler = CommandHandler('remove', remove)\nlist_handler = CommandHandler('list', list_wallets)\nwhale_tracker_handler = CommandHandler('whale_tracker', whale_tracker)\nreca_handler = CommandHandler('reca', reca)\nget_top_wallet_handler = CommandHandler('top', getTop5)",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "dispatcher",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "dispatcher = updater.dispatcher\nset_bot_commands(updater)\nstart_handler = CommandHandler('start', start)\nadd_handler = CommandHandler('add', add)\nremove_handler = CommandHandler('remove', remove)\nlist_handler = CommandHandler('list', list_wallets)\nwhale_tracker_handler = CommandHandler('whale_tracker', whale_tracker)\nreca_handler = CommandHandler('reca', reca)\nget_top_wallet_handler = CommandHandler('top', getTop5)\nconv_handler = ConversationHandler(",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "start_handler",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "start_handler = CommandHandler('start', start)\nadd_handler = CommandHandler('add', add)\nremove_handler = CommandHandler('remove', remove)\nlist_handler = CommandHandler('list', list_wallets)\nwhale_tracker_handler = CommandHandler('whale_tracker', whale_tracker)\nreca_handler = CommandHandler('reca', reca)\nget_top_wallet_handler = CommandHandler('top', getTop5)\nconv_handler = ConversationHandler(\n        entry_points=[CallbackQueryHandler(button)],\n        states={",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "add_handler",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "add_handler = CommandHandler('add', add)\nremove_handler = CommandHandler('remove', remove)\nlist_handler = CommandHandler('list', list_wallets)\nwhale_tracker_handler = CommandHandler('whale_tracker', whale_tracker)\nreca_handler = CommandHandler('reca', reca)\nget_top_wallet_handler = CommandHandler('top', getTop5)\nconv_handler = ConversationHandler(\n        entry_points=[CallbackQueryHandler(button)],\n        states={\n            ADD_WALLET_ADDRESS: [",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "remove_handler",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "remove_handler = CommandHandler('remove', remove)\nlist_handler = CommandHandler('list', list_wallets)\nwhale_tracker_handler = CommandHandler('whale_tracker', whale_tracker)\nreca_handler = CommandHandler('reca', reca)\nget_top_wallet_handler = CommandHandler('top', getTop5)\nconv_handler = ConversationHandler(\n        entry_points=[CallbackQueryHandler(button)],\n        states={\n            ADD_WALLET_ADDRESS: [\n                MessageHandler(Filters.text & ~Filters.command, handle_address),",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "list_handler",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "list_handler = CommandHandler('list', list_wallets)\nwhale_tracker_handler = CommandHandler('whale_tracker', whale_tracker)\nreca_handler = CommandHandler('reca', reca)\nget_top_wallet_handler = CommandHandler('top', getTop5)\nconv_handler = ConversationHandler(\n        entry_points=[CallbackQueryHandler(button)],\n        states={\n            ADD_WALLET_ADDRESS: [\n                MessageHandler(Filters.text & ~Filters.command, handle_address),\n                ],",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "whale_tracker_handler",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "whale_tracker_handler = CommandHandler('whale_tracker', whale_tracker)\nreca_handler = CommandHandler('reca', reca)\nget_top_wallet_handler = CommandHandler('top', getTop5)\nconv_handler = ConversationHandler(\n        entry_points=[CallbackQueryHandler(button)],\n        states={\n            ADD_WALLET_ADDRESS: [\n                MessageHandler(Filters.text & ~Filters.command, handle_address),\n                ],\n            WALLET_LIST : [MessageHandler(Filters.text & ~Filters.command, list_wallets)],",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "reca_handler",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "reca_handler = CommandHandler('reca', reca)\nget_top_wallet_handler = CommandHandler('top', getTop5)\nconv_handler = ConversationHandler(\n        entry_points=[CallbackQueryHandler(button)],\n        states={\n            ADD_WALLET_ADDRESS: [\n                MessageHandler(Filters.text & ~Filters.command, handle_address),\n                ],\n            WALLET_LIST : [MessageHandler(Filters.text & ~Filters.command, list_wallets)],\n            WALLET_NAME : [MessageHandler(Filters.text & ~Filters.command, handle_walletName)],",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "get_top_wallet_handler",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "get_top_wallet_handler = CommandHandler('top', getTop5)\nconv_handler = ConversationHandler(\n        entry_points=[CallbackQueryHandler(button)],\n        states={\n            ADD_WALLET_ADDRESS: [\n                MessageHandler(Filters.text & ~Filters.command, handle_address),\n                ],\n            WALLET_LIST : [MessageHandler(Filters.text & ~Filters.command, list_wallets)],\n            WALLET_NAME : [MessageHandler(Filters.text & ~Filters.command, handle_walletName)],\n            SETTINGS : [MessageHandler(Filters.text & ~Filters.command, settings)],",
+        "detail": "bot",
+        "documentation": {}
+    },
+    {
+        "label": "conv_handler",
+        "kind": 5,
+        "importPath": "bot",
+        "description": "bot",
+        "peekOfCode": "conv_handler = ConversationHandler(\n        entry_points=[CallbackQueryHandler(button)],\n        states={\n            ADD_WALLET_ADDRESS: [\n                MessageHandler(Filters.text & ~Filters.command, handle_address),\n                ],\n            WALLET_LIST : [MessageHandler(Filters.text & ~Filters.command, list_wallets)],\n            WALLET_NAME : [MessageHandler(Filters.text & ~Filters.command, handle_walletName)],\n            SETTINGS : [MessageHandler(Filters.text & ~Filters.command, settings)],\n            ADD_BUTTONS: [MessageHandler(Filters.text & ~Filters.command, add_buttons)],",
+        "detail": "bot",
+        "documentation": {}
+    }
+]

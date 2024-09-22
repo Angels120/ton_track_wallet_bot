@@ -1,3 +1,4 @@
+from ast import pattern
 import requests
 import json
 import time
@@ -146,13 +147,14 @@ def format_transaction_message(transaction, ton_price , user_id, wallet_name, wa
         transaction_id = transaction.get('transaction_id', {}).get('hash', 'Unknown')
         # getmsg = requests.get(f"https://tonapi.io/v2/accounts/{wallet_address}/events?limit=2").json()
         out_msgs = transaction.get('out_msgs', [])
+        print("out_msgs: ", out_msgs)
         raw_address = ""
         contract_address = ""
         if out_msgs:
             value_ton = int(out_msgs[0].get('value', 0)) / 10**9
-            # if getmsg.get("events", []) and getmsg["events"][0].get("actions", []) and getmsg["events"][0]["actions"][0].get("JettonTransfer", {}).get("jetton", {}).get("name", ""):
-            #     token_name = getmsg["events"][0]["actions"][0]["JettonTransfer"]["jetton"]["name"]
-            #     raw_address = getmsg["events"][0]["actions"][0]["JettonTransfer"]["jetton"]["address"]
+            # if getmsg.get("events", []) and getmsg.get("actions", []) and getmsg["actions"][0].get("JettonTransfer", {}).get("jetton", {}).get("name", ""):
+            #     token_name = getmsg["actions"][0]["JettonTransfer"]["jetton"]["name"]
+            #     raw_address = getmsg["actions"][0]["JettonTransfer"]["jetton"]["address"]
             #     print("address: ", raw_address)
             # else:
             #     print("error failed fetch token name")
@@ -182,27 +184,23 @@ def kontrolswap(transaction, wallet_address, ton_price, user_id, wallet_name):
     try:
         if not transaction:
             return "yok"
-        out_msgs = transaction.get('out_msgs', [])
-        if out_msgs:
-            print("outmsg: ", out_msgs)
-            value_ton = int(out_msgs[0].get('value', 0)) / 10**9
-            # if getmsg.get("events", []) and getmsg["events"][0].get("actions", []) and getmsg["events"][0]["actions"][0].get("JettonTransfer", {}).get("jetton", {}).get("name", ""):
-            #     token_name = getmsg["events"][0]["actions"][0]["JettonTransfer"]["jetton"]["name"]
-            #     raw_address = getmsg["events"][0]["actions"][0]["JettonTransfer"]["jetton"]["address"]
-            #     print("address: ", raw_address)
-            # else:
-            #     print("error failed fetch token name")
-        else:
-            return "yok"
+        
         raw_address = ""
         contract_address = ""
-        getmsg = requests.get(f"https://tonapi.io/v2/accounts/{wallet_address}/events?limit=2").json()
-        if getmsg.get("events", []) and getmsg["events"][0].get("actions", []) and getmsg["events"][0]["actions"][0].get("simple_preview", {}).get("description", ""):
-            if getmsg["events"][0]["actions"][0]["simple_preview"]["name"] == "Swap Tokens":
+        getmsg = requests.get(f"https://tonapi.io/v2/accounts/{wallet_address}/events/{transaction['transaction_id']['hash']}").json()
+        print("getmsg: ", getmsg)
+        if getmsg.get("actions", []) and getmsg["actions"][0].get("simple_preview", {}).get("description", ""):
+            if getmsg["actions"][0]["simple_preview"]["name"] == "Swap Tokens":
                 token_name = ""
-                if getmsg.get("events", []) and getmsg["events"][0].get("actions", []) and getmsg["events"][0]["actions"][0].get("JettonSwap", {}).get("jetton_master_out", {}).get("name", ""):
-                    token_name = getmsg["events"][0]["actions"][0]["JettonSwap"]["jetton_master_out"]["name"]
-                    raw_address = getmsg["events"][0]["actions"][0]["JettonSwap"]["jetton_master_out"]["address"]
+                if getmsg.get("actions", []) and getmsg["actions"][0].get("JettonSwap", {}).get("jetton_master_in", {}).get("name", ""):
+                    token_name = getmsg["actions"][0]["JettonSwap"]["jetton_master_in"]["name"]
+                    raw_address = getmsg["actions"][0]["JettonSwap"]["jetton_master_in"]["address"]
+                    value_ton = int(getmsg["actions"][0]["JettonSwap"]["ton_out"]) / 10**9
+                    print("address: ", raw_address)
+                elif getmsg.get("actions", []) and getmsg["actions"][0].get("JettonSwap", {}).get("jetton_master_out", {}).get("name", ""):
+                    token_name = getmsg["actions"][0]["JettonSwap"]["jetton_master_out"]["name"]
+                    raw_address = getmsg["actions"][0]["JettonSwap"]["jetton_master_out"]["address"]
+                    value_ton = int(getmsg["actions"][0]["JettonSwap"]["ton_in"]) / 10**9
                     print("address: ", raw_address)
                 else:
                     print("error failed fetch token name")
@@ -215,7 +213,7 @@ def kontrolswap(transaction, wallet_address, ton_price, user_id, wallet_name):
                 print(limit)
                 if float(limit) > value_usd:
                     return "yok"
-                description = getmsg["events"][0]["actions"][0]["simple_preview"]["description"]
+                description = getmsg["actions"][0]["simple_preview"]["description"]
                 sayı = int(re.search(r'\b\d+\b', description).group())  # Dizeyi sayıya dönüştür
                 emoji = ""
                 if sayı < 30:
@@ -228,8 +226,15 @@ def kontrolswap(transaction, wallet_address, ton_price, user_id, wallet_name):
                     emoji = "🐋"
 
                 new_description = f"{description} {emoji} "
-                message = f"💹 <u><b>New Swap Alert</b></u> 💹\n\n 🔍 Wallet Address: \n <code>{wallet_address}</code>-({wallet_name})\n\n\n🔄  Tonscan Transaction : {value_ton} TON (${value_usd:.2f})<br> 📈 Token Name : {token_name}<br> 📝 Contract Address: <code>{contract_address}</code><br><br> Powered By @resistanceCatTon -"
-                return message
+                message = (  
+                    f"💹 <u><b>New Swap Alert</b></u> 💹\n\n"  
+                    f"🔍 Wallet Address: \n<code>{wallet_address}</code>-({wallet_name})\n\n"  
+                    f"🔄  Tonscan Transaction: {value_ton} TON (${value_usd:.2f})\n"  
+                    f"📈 Token Name: {token_name}\n"  
+                    f"📝 Contract Address: <code>{contract_address}</code>\n\n"  
+                    "Powered By @resistanceCatTon -"  
+                ) 
+                return message.strip()
             else:
                 return "yok"
         else:
@@ -247,7 +252,6 @@ def send_telegram_notification(message, user_id):
         }
 
         url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage'
-        # keyboardMarkup = InlineKeyboardMarkup(keyboard)
         payload = {'chat_id': user_id, 'text': message, 'parse_mode': 'HTML', 'reply_markup': json.dumps(keyboard)}
         response = requests.post(url, json=payload)
         print(response)
